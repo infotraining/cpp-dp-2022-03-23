@@ -14,31 +14,35 @@ using namespace std;
 using namespace Drawing;
 using namespace Drawing::IO;
 
-unique_ptr<Shape> create_shape(const string& id)
-{
-    if (id == Rectangle::id)
-        return make_unique<Rectangle>();
-    else if (id == Square::id)
-        return make_unique<Square>();
+// unique_ptr<Shape> create_shape(const string& id)
+// {
+//     if (id == Rectangle::id)
+//         return make_unique<Rectangle>();
+//     else if (id == Square::id)
+//         return make_unique<Square>();
 
-    throw runtime_error("Unknown shape id");
-}
+//     throw runtime_error("Unknown shape id");
+// }
 
-unique_ptr<ShapeReaderWriter> create_shape_rw(Shape& shape)
-{
-    if (typeid(shape) == typeid(Rectangle))
-        return make_unique<RectangleReaderWriter>();
-    else if (typeid(shape) == typeid(Square))
-        return make_unique<SquareReaderWriter>();
+// unique_ptr<ShapeReaderWriter> create_shape_rw(Shape& shape)
+// {
+//     if (typeid(shape) == typeid(Rectangle))
+//         return make_unique<RectangleReaderWriter>();
+//     else if (typeid(shape) == typeid(Square))
+//         return make_unique<SquareReaderWriter>();
 
-    throw runtime_error("Unknown shape id");
-}
+//     throw runtime_error("Unknown shape id");
+// }
 
 class GraphicsDoc
 {
     vector<unique_ptr<Shape>> shapes_;
+    ShapeFactory& shape_factory_;
 
 public:
+    GraphicsDoc(ShapeFactory& shape_factory) : shape_factory_{shape_factory}
+    {}
+
     void add(unique_ptr<Shape> shp)
     {
         shapes_.push_back(move(shp));
@@ -70,8 +74,8 @@ public:
 
             cout << "Loading " << shape_id << "..." << endl;
 
-            auto shape = create_shape(shape_id);
-            auto shape_rw = create_shape_rw(*shape);
+            auto shape = shape_factory_.create(shape_id);
+            auto shape_rw = shape->create_rw();
 
             shape_rw->read(*shape, file_in);
 
@@ -85,7 +89,7 @@ public:
 
         for (const auto& shp : shapes_)
         {
-            auto shape_rw = create_shape_rw(*shp);
+            auto shape_rw = shp->create_rw();
             shape_rw->write(*shp, file_out);
         }
     }
@@ -93,9 +97,14 @@ public:
 
 int main()
 {
+    // bootstraping
+    Drawing::ShapeFactory shape_factory;
+    shape_factory.register_creator(Rectangle::id, std::make_unique<Rectangle>);
+    shape_factory.register_creator(Square::id, std::make_unique<Square>);
+
     cout << "Start..." << endl;
 
-    GraphicsDoc doc;
+    GraphicsDoc doc{shape_factory};
 
     doc.load("drawing.txt");
 

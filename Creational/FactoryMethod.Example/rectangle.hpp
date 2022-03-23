@@ -36,6 +36,8 @@ namespace Drawing
         }
 
         void draw() const override;
+
+        std::unique_ptr<IO::ShapeReaderWriter> create_rw() override;
     };
 }
 #endif // RECTANGLE_HPP

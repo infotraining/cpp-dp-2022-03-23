@@ -26,6 +26,8 @@ namespace Drawing
         void draw() const override;
 
         void move(int x, int y) override;
+
+        std::unique_ptr<IO::ShapeReaderWriter> create_rw() override;
     };
 }
 

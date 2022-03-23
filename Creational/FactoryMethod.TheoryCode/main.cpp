@@ -95,7 +95,7 @@ int main()
     //////////////////////////////////////
     // Factory Method in STD Library
 
-    std::list<int> data = {1, 2, 3};
+    std::vector<int> data = {1, 2, 3};
 
     for(auto it = data.begin(); it != data.end(); ++it)
     {

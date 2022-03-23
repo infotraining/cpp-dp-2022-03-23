@@ -1,4 +1,5 @@
 #include "square.hpp"
+#include "shape_readers_writers/square_reader_writer.hpp"
 #include <cassert>
 
 Drawing::Square::Square(int x, int y, int size)
@@ -37,4 +38,9 @@ void Drawing::Square::set_size(int size)
 void Drawing::Square::draw() const
 {
     rect_.draw();
+}
+
+std::unique_ptr<Drawing::IO::ShapeReaderWriter> Drawing::Square::create_rw()
+{
+    return std::make_unique<Drawing::IO::SquareReaderWriter>();
 }
