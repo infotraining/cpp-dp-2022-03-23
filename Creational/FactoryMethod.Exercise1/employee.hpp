@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <string>
+#include <memory>
+
+class HRInfo;
 
 class Employee
 {
@@ -20,6 +23,7 @@ public:
     virtual ~Employee() = default;
 
     virtual void description() const = 0;
+    virtual std::unique_ptr<HRInfo> get_hr_info() const = 0;
 };
 
 class Salary : public Employee
@@ -28,6 +32,7 @@ public:
     Salary(const std::string& name);
 
     void description() const override;
+    std::unique_ptr<HRInfo> get_hr_info() const override;
 };
 
 class Hourly : public Employee
@@ -36,6 +41,7 @@ public:
     Hourly(const std::string& name);
 
     void description() const override;
+    std::unique_ptr<HRInfo> get_hr_info() const override;
 };
 
 class Temp : public Employee
@@ -44,6 +50,7 @@ public:
     Temp(const std::string& name);
 
     void description() const override;
+    std::unique_ptr<HRInfo> get_hr_info() const override;
 };
 
 #endif /* EMPLOYEE_HPP_ */

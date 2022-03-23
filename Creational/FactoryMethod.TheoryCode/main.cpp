@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <list>
 
 using namespace std;
 
@@ -84,9 +85,21 @@ int main()
 {
     LoggerFactory logger_factory;
     logger_factory.insert(make_pair("ConsoleLogger", std::make_unique<ConsoleLogger>));
-    logger_factory.insert(make_pair("FileLogger", []() { return make_unique<FileLogger>("data.log"); }));
+    logger_factory.insert(make_pair("FileLogger", []() { return make_unique<FileLogger>("data.log"); })); 
     logger_factory.insert(make_pair("DbLogger", []() { return make_unique<DbLogger>("192.168.0.1:9999"); }));
 
     Service srv(logger_factory.at("ConsoleLogger"));
     srv.run();
+
+
+    //////////////////////////////////////
+    // Factory Method in STD Library
+
+    std::list<int> data = {1, 2, 3};
+
+    for(auto it = data.begin(); it != data.end(); ++it)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << "\n";
 }
