@@ -4,167 +4,177 @@
 #include <memory>
 #include <vector>
 
+#include "widgets.hpp"
+#include "widgets_factory.hpp"
+#include "window.hpp"
+
 using namespace std;
 
 #define MOTIF
 
-enum class IconType
-{
-    none,
-    ok,
-    cancel,
-    warning,
-    error
-};
+// enum class IconType
+// {
+//     none,
+//     ok,
+//     cancel,
+//     warning,
+//     error
+// };
 
-class Widget
-{
-public:
-    virtual void draw() = 0;
-    virtual ~Widget() = default;
-};
+// class Widget
+// {
+// public:
+//     virtual void draw() = 0;
+//     virtual ~Widget() = default;
+// };
 
-class Button : public Widget
-{
-    std::string caption_;
-    IconType icon_type_;
+// class Button : public Widget
+// {
+//     std::string caption_;
+//     IconType icon_type_;
 
-public:
-    Button(const std::string& caption, IconType icon_type)
-        : caption_{caption}
-        , icon_type_{icon_type}
-    {
-    }
+// public:
+//     Button(const std::string& caption, IconType icon_type)
+//         : caption_{caption}
+//         , icon_type_{icon_type}
+//     {
+//     }
 
-    std::string caption() const
-    {
-        return caption_;
-    }
+//     std::string caption() const
+//     {
+//         return caption_;
+//     }
 
-    IconType icon() const
-    {
-        return icon_type_;
-    }
-};
+//     IconType icon() const
+//     {
+//         return icon_type_;
+//     }
+// };
 
-class Menu : public Widget
-{
-    std::string text_;
+// class Menu : public Widget
+// {
+//     std::string text_;
 
-public:
-    Menu(const std::string& text)
-        : text_{text}
-    {
-    }
+// public:
+//     Menu(const std::string& text)
+//         : text_{text}
+//     {
+//     }
 
-    std::string text() const
-    {
-        return text_;
-    }
-};
+//     std::string text() const
+//     {
+//         return text_;
+//     }
+// };
 
-class MotifButton : public Button
-{
-public:
-    using Button::Button;
+// class MotifButton : public Button
+// {
+// public:
+//     using Button::Button;
 
-    void draw() override
-    {
-        cout << "MotifButton [ " << caption() << " ]\n";
-    }
-};
+//     void draw() override
+//     {
+//         cout << "MotifButton [ " << caption() << " ]\n";
+//     }
+// };
 
-class MotifMenu : public Menu
-{
-public:
-    using Menu::Menu;
+// class MotifMenu : public Menu
+// {
+// public:
+//     using Menu::Menu;
 
-    void draw() override
-    {
-        cout << "MotifMenu { " << text() << " }\n";
-    }
-};
+//     void draw() override
+//     {
+//         cout << "MotifMenu { " << text() << " }\n";
+//     }
+// };
 
-class WindowsButton : public Button
-{
-public:
-    using Button::Button;
+// class WindowsButton : public Button
+// {
+// public:
+//     using Button::Button;
 
-    void draw() override
-    {
-        cout << "WindowsButton [ " << caption() << " ]\n";
-    }
-};
+//     void draw() override
+//     {
+//         cout << "WindowsButton [ " << caption() << " ]\n";
+//     }
+// };
 
-class WindowsMenu : public Menu
-{
-public:
-    using Menu::Menu;
+// class WindowsMenu : public Menu
+// {
+// public:
+//     using Menu::Menu;
 
-    void draw() override
-    {
-        cout << "WindowsMenu { " << text() << " }\n";
-    }
-};
+//     void draw() override
+//     {
+//         cout << "WindowsMenu { " << text() << " }\n";
+//     }
+// };
 
-class Window
-{
-    std::vector<std::unique_ptr<Widget>> widgets;
+// class Window
+// {
+//     std::vector<std::unique_ptr<Widget>> widgets;
 
-public:
-    void display() const
-    {
-        std::cout << "######################\n";
-        for (const auto& w : widgets)
-            w->draw();
-        std::cout << "######################\n\n";
-    }
+// public:
+//     void display() const
+//     {
+//         std::cout << "######################\n";
+//         for (const auto& w : widgets)
+//             w->draw();
+//         std::cout << "######################\n\n";
+//     }
 
-    void add_widget(std::unique_ptr<Widget> widget)
-    {
-        widgets.push_back(move(widget));
-    }
-};
+//     void add_widget(std::unique_ptr<Widget> widget)
+//     {
+//         widgets.push_back(move(widget));
+//     }
+// };
 
-class WindowOne : public Window
-{
+// class WindowOne : public Window
+// {
 
-public:
-    WindowOne()
-    {
-#ifdef MOTIF
-        add_widget(std::make_unique<MotifButton>("OK", IconType::ok));
-        add_widget(std::make_unique<MotifMenu>("File"));
-#else // WINDOWS
-        add_widget(std::make_unique<WindowsButton>("OK", IconType::ok));
-        add_widget(std::make_unique<WindowsMenu>("File"));
-#endif
-    }
-};
+// public:
+//     WindowOne()
+//     {
+// #ifdef MOTIF
+//         add_widget(std::make_unique<MotifButton>("OK", IconType::ok));
+//         add_widget(std::make_unique<MotifMenu>("File"));
+// #else // WINDOWS
+//         add_widget(std::make_unique<WindowsButton>("OK", IconType::ok));
+//         add_widget(std::make_unique<WindowsMenu>("File"));
+// #endif
+//     }
+// };
 
-class WindowTwo : public Window
-{
+// class WindowTwo : public Window
+// {
 
-public:
-    WindowTwo()
-    {
-#ifdef MOTIF
-        add_widget(std::make_unique<MotifMenu>("Edit"));
-        add_widget(std::make_unique<MotifButton>("OK", IconType::ok));
-        add_widget(std::make_unique<MotifButton>("Cancel", IconType::cancel));
-#else // WINDOWS
-        add_widget(std::make_unique<WindowsMenu>("Edit"));
-        add_widget(std::make_unique<WindowsButton>("OK", IconType::ok));
-        add_widget(std::make_unique<WindowsButton>("Cancel", IconType::cancel));
-#endif
-    }
-};
+// public:
+//     WindowTwo()
+//     {
+// #ifdef MOTIF
+//         add_widget(std::make_unique<MotifMenu>("Edit"));
+//         add_widget(std::make_unique<MotifButton>("OK", IconType::ok));
+//         add_widget(std::make_unique<MotifButton>("Cancel", IconType::cancel));
+// #else // WINDOWS
+//         add_widget(std::make_unique<WindowsMenu>("Edit"));
+//         add_widget(std::make_unique<WindowsButton>("OK", IconType::ok));
+//         add_widget(std::make_unique<WindowsButton>("Cancel", IconType::cancel));
+// #endif
+//     }
+// };
 
 int main(void)
 {
-    WindowOne w1;
+    #ifdef MOTIF
+        MotifWidgetsFactory widget_factory;
+    #else
+        WindowsfWidgetsFactory widget_factory;
+    #endif
+
+    WindowOne w1{widget_factory};
     w1.display();
 
-    WindowTwo w2;
+    WindowTwo w2{widget_factory};
     w2.display();
 }
