@@ -10,46 +10,58 @@ class Engine
 public:
     virtual void start() = 0;
     virtual void stop() = 0;
+    virtual std::unique_ptr<Engine> clone() const = 0;
     virtual ~Engine() = default;
 };
 
-class Diesel : public Engine
+// CRTP Idiom
+template <typename TEngine_, typename TEngineBase_ = Engine>
+class CloneableEngine : public TEngineBase_
 {
 public:
-    virtual void start() override
+    std::unique_ptr<Engine> clone() const override
+    {
+        return std::make_unique<TEngine_>(*static_cast<const TEngine_*>(this));
+    }
+};
+
+class Diesel : public CloneableEngine<Diesel>
+{
+public:
+    void start() override
     {
         cout << "Diesel starts\n";
     }
 
-    virtual void stop() override
+    void stop() override
     {
         cout << "Diesel stops\n";
     }
 };
 
-class TDI : public Diesel
+class TDI : public CloneableEngine<TDI, Diesel>
 {
 public:
-    virtual void start() override
+    void start() override
     {
         cout << "TDI starts\n";
     }
 
-    virtual void stop() override
+    void stop() override
     {
         cout << "TDI stops\n";
     }
 };
 
-class Hybrid : public Engine
+class Hybrid : public CloneableEngine<Hybrid>
 {
 public:
-    virtual void start() override
+    void start() override
     {
         cout << "Hybrid starts\n";
     }
 
-    virtual void stop() override
+    void stop() override
     {
         cout << "Hybrid stops\n";
     }
@@ -57,13 +69,19 @@ public:
 
 class Car
 {
-    unique_ptr<Engine> engine_;
+    std::unique_ptr<Engine> engine_;
 
 public:
-    Car(unique_ptr<Engine> engine)
-        : engine_{move(engine)}
+    Car(std::unique_ptr<Engine> engine)
+        : engine_ {move(engine)}
     {
     }
+
+    Car(const Car& source) : engine_{source.engine_->clone()}
+    {
+    }
+
+    Car(Car&&) = default;
 
     void drive(int km)
     {
@@ -75,8 +93,13 @@ public:
 
 int main()
 {
-    Car c1{make_unique<Hybrid>()};
-    c1.drive(100);
+    {
+        Car c1 {std::make_unique<TDI>()};
+        c1.drive(100);
 
-    cout << "\n";
+        cout << "\n";
+
+        Car c2 = c1;
+        c2.drive(200);
+    }
 }
