@@ -31,6 +31,7 @@ public:
 
 using UndoableCommandPtr = std::unique_ptr<UndoableCommand>;
 
+// Prototype Pattern - CRTP
 template <typename Cmd, typename BaseCommand = UndoableCommand>
 class CloneableCommand : public BaseCommand
 {
@@ -86,7 +87,7 @@ public:
         do_undo();
     }
 
-protected:
+protected: // Template Method
     virtual void do_save_state() = 0;
     virtual void do_execute() = 0;
     virtual void do_undo() = 0;
