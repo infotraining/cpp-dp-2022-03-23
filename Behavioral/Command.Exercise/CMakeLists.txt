@@ -33,8 +33,8 @@ target_link_libraries(${PROJECT_MAIN} PUBLIC ${PROJECT_LIB})
 
 ####################
 # Boost DI
-find_path(BOOST_DI_INCLUDE_DIRS "boost/di.hpp")
-target_include_directories(${PROJECT_MAIN} PRIVATE ${BOOST_DI_INCLUDE_DIRS})
+#find_path(BOOST_DI_INCLUDE_DIRS "boost/di.hpp")
+#target_include_directories(${PROJECT_MAIN} PRIVATE ${BOOST_DI_INCLUDE_DIRS})
 
 # #----------------------------------------
 # # set compiler options

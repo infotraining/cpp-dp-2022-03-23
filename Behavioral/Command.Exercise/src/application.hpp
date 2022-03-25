@@ -1,7 +1,7 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include <boost/algorithm/string.hpp>
+//#include <boost/algorithm/string.hpp>
 #include <unordered_map>
 
 #include "command.hpp"
@@ -33,7 +33,7 @@ public:
             console_.print(Messages::msg_prompt);
 
             auto cmd = console_.get_line();
-            boost::to_upper(cmd);
+            //boost::to_upper(cmd);
 
             if (cmd == Commands::cmd_exit)
                 break;
@@ -51,7 +51,7 @@ public:
 
     void add_command(std::string name, CommandSharedPtr cmd)
     {
-        boost::to_upper(name);
+        //boost::to_upper(name);
         cmds_.emplace(std::move(name), cmd);
     }
 };

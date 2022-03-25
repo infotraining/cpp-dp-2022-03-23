@@ -26,3 +26,7 @@ Jeśli uczestnik chce skonfigurować lokalnie swoje środowisko, to należy zain
 * C/C++
 * CMakeTools
 * Live Share
+
+## Ankieta
+
+* https://forms.gle/dA6raX7Rn21y59qh6

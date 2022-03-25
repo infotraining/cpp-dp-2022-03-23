@@ -1,11 +1,12 @@
 #ifndef DOCUMENT_HPP
 #define DOCUMENT_HPP
 
-#include <boost/algorithm/string/case_conv.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
+// #include <boost/algorithm/string/case_conv.hpp>
+// #include <boost/archive/text_iarchive.hpp>
+// #include <boost/archive/text_oarchive.hpp>
 #include <sstream>
 #include <string>
+#include <algorithm>
 
 class Document
 {
@@ -45,12 +46,14 @@ public:
 
     void to_upper()
     {
-        boost::to_upper(text_);
+        //boost::to_upper(text_);
+        std::transform(text_.begin(), text_.end(),text_.begin(), ::toupper);
     }
 
     void to_lower()
     {
-        boost::to_lower(text_);
+        //boost::to_lower(text_);
+        std::transform(text_.begin(), text_.end(),text_.begin(), ::tolower);
     }
 
     void clear()
@@ -60,21 +63,20 @@ public:
 
     Memento create_memento() const
     {
-        std::stringstream stream;
-        boost::archive::text_oarchive archive(stream);
-        archive << text_;
+        std::stringstream archive_stream;
+        
+        archive_stream << text_;
 
         Memento memento;
-        memento.snapshot_ = stream.str();
+        memento.snapshot_ = archive_stream.str();
 
         return memento;
     }
 
     void set_memento(Memento& memento)
     {
-        std::stringstream stream{memento.snapshot_};
-        boost::archive::text_iarchive archive(stream);
-        archive >> text_;
+        std::stringstream archive_stream{memento.snapshot_};
+        archive_stream >> text_;
     }
 
     void replace(size_t start_pos, size_t count, const std::string& text)
