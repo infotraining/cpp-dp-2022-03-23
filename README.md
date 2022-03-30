@@ -30,3 +30,9 @@ Jeśli uczestnik chce skonfigurować lokalnie swoje środowisko, to należy zain
 ## Ankieta
 
 * https://forms.gle/dA6raX7Rn21y59qh6
+
+## Książki
+
+* Nowoczesne C++ + Design Patterns
+  * https://learning.oreilly.com/library/view/design-patterns-in/9781484236031/
+  * https://learning.oreilly.com/library/view/hands-on-design-patterns/9781788832564/
